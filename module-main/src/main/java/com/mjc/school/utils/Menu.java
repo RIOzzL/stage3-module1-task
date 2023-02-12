@@ -12,6 +12,7 @@ import static com.mjc.school.utils.Operations.*;
 
 public class Menu {
 
+
     public void printMenu() {
         System.out.println("Enter the number of operation:");
         for (Operations value : values()) {
@@ -27,7 +28,7 @@ public class Menu {
         System.out.println(OPERATION + GET_NEWS_BY_ID.getOperationDescription());
         System.out.println(ENTER_NEWS_ID);
         try {
-            NewsDto newsById = newsController.getNewsById(validateNumberInput(scanner, "News Id"));
+            NewsDto newsById = newsController.getNewsById(validateNumberInput(scanner, NEWS_ID));
             System.out.println(newsById);
         } catch (ValidatorException exception) {
             System.out.println(exception.getMessage());
@@ -44,7 +45,7 @@ public class Menu {
         newsDto.setContent(scanner.nextLine());
         System.out.println(ENTER_AUTHOR_ID);
         try {
-            newsDto.setAuthorId(validateNumberInput(scanner, "Author Id"));
+            newsDto.setAuthorId(validateNumberInput(scanner, AUTHOR_ID));
             System.out.println(newsController.createNews(newsDto));
         } catch (ValidatorException exception) {
             System.out.println(exception.getMessage());
@@ -56,14 +57,14 @@ public class Menu {
         System.out.println(ENTER_NEWS_ID);
         NewsDto newsDto = new NewsDto();
         try {
-            newsDto.setId(validateNumberInput(scanner, "News Id"));
+            newsDto.setId(validateNumberInput(scanner, NEWS_ID));
             System.out.println(ENTER_NEWS_TITLE);
             scanner.nextLine();
             newsDto.setTitle(scanner.nextLine());
             System.out.println(ENTER_NEWS_CONTENT);
             newsDto.setContent(scanner.nextLine());
             System.out.println(ENTER_AUTHOR_ID);
-            newsDto.setAuthorId(validateNumberInput(scanner, "Author Id"));
+            newsDto.setAuthorId(validateNumberInput(scanner, AUTHOR_ID));
             System.out.println(newsController.updateNews(newsDto));
         } catch (ValidatorException exception) {
             System.out.println(exception.getMessage());
@@ -73,8 +74,7 @@ public class Menu {
     public void removeNewsById(NewsController newsController, Scanner scanner) {
         System.out.println(OPERATION + REMOVE_NEWS_BY_ID.getOperationDescription());
         System.out.println(ENTER_NEWS_ID);
-        // scanner.nextLine();
-        long id = validateNumberInput(scanner, "News Id");
+        long id = validateNumberInput(scanner, NEWS_ID);
         try {
             System.out.println(newsController.removeNews(id));
         } catch (ValidatorException exception) {

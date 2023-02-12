@@ -10,6 +10,9 @@ import java.util.List;
 
 public class FileResourcesUtils {
 
+    private FileResourcesUtils() {
+    }
+
     public static List<String> getDataFromResourceFiles(String fileName) {
         ClassLoader classLoader = FileResourcesUtils.class.getClassLoader();
         List<String> fileContentByStrings = new ArrayList<>();

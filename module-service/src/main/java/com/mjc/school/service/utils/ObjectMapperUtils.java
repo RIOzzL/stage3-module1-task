@@ -5,7 +5,6 @@ import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ObjectMapperUtils {
 
@@ -44,7 +43,7 @@ public class ObjectMapperUtils {
     public static <D, T> List<D> mapAll(final Collection<T> modelList, Class<D> outCLass) {
         return modelList.stream()
                 .map(model -> map(model, outCLass))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
