@@ -5,11 +5,13 @@ import java.util.Optional;
 
 public interface Repository<T> {
 
-    public List<T> getAll();
+    public List<T> readAll();
 
-    public Optional<T> getById(Long id);
+    public Optional<T> readById(Long id);
 
-    public T save(T t);
+    public T create(T t);
 
-    public boolean deleteById(Long id);
+    public T update(T t);
+
+    public Boolean deleteById(Long id);
 }

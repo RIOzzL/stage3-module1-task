@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class DataSource {
         List<String> newsTitles = FileResourcesUtils.getDataFromResourceFiles("news.txt");
         List<String> newsContents = FileResourcesUtils.getDataFromResourceFiles("content.txt");
         for (int id = 1; id <= 20; id++) {
-            newsList.add(new News((long) id, newsTitles.get(id - 1), newsContents.get(id - 1), LocalDateTime.now(),
-                    LocalDateTime.now(), authorList.get(id - 1).getId()));
+            newsList.add(new News((long) id, newsTitles.get(id - 1), newsContents.get(id - 1),
+                    LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+                    LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), authorList.get(id - 1).getId()));
         }
         newsId = (long) newsList.size();
     }

@@ -6,9 +6,7 @@ import com.mjc.school.repository.models.News;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.exceptiion.ValidatorException;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.mjc.school.service.exceptiion.ServiceError.*;
 
@@ -36,7 +34,7 @@ public class NewsValidator {
     }
 
     public void validateById(long id) {
-        Optional<News> news = newsRepository.getById(id);
+        Optional<News> news = newsRepository.readById(id);
         if (news.isEmpty()) {
             throw new ValidatorException(String.format(NEWS_ID_DOES_NOT_EXIST.getMessage(), id));
         }
@@ -52,7 +50,7 @@ public class NewsValidator {
             errorMessage.append(String.format(VALIDATE_STRING_LENGTH.getMessage(), NEWS_CONTENT,
                     NEWS_CONTENT_MIN_LENGTH, NEWS_CONTENT_MAX_LENGTH, NEWS_CONTENT, newsDto.getContent())).append("\n");
         }
-        if (!newsRepository.getAll().stream().map(News::getAuthorId).toList().contains(newsDto.getAuthorId())) {
+        if (!newsRepository.readAll().stream().map(News::getAuthorId).toList().contains(newsDto.getAuthorId())) {
             errorMessage.append(String.format(AUTHOR_ID_DOES_NOT_EXIST.getMessage(), newsDto.getAuthorId())).append("\n");
         }
         if (!errorMessage.isEmpty()) {

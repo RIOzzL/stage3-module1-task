@@ -6,6 +6,8 @@ import com.mjc.school.repository.utils.DataSource;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,26 +18,36 @@ public class NewsRepository implements Repository<News> {
     private final DataSource dataSource = DataSource.getInstance();
 
     @Override
-    public List<News> getAll() {
+    public List<News> readAll() {
         return dataSource.getNewsList();
     }
 
     @Override
-    public Optional<News> getById(Long id) {
+    public Optional<News> readById(Long id) {
         return dataSource.getNewsList().stream()
                 .filter(news -> news.getId().equals(id))
                 .findFirst();
     }
 
     @Override
-    public News save(News news) {
+    public News create(News news) {
         news.setId(dataSource.increaseNewsId());
         dataSource.getNewsList().add(news);
         return news;
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public News update(News news) {
+        News newsToUpdate = this.readById(news.getId()).get();
+        newsToUpdate.setTitle(news.getTitle());
+        newsToUpdate.setContent(news.getContent());
+        newsToUpdate.setAuthorId(news.getAuthorId());
+        newsToUpdate.setLastUpdatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        return newsToUpdate;
+    }
+
+    @Override
+    public Boolean deleteById(Long id) {
         Optional<News> newsToDelete = dataSource.getNewsList().stream()
                 .filter(news -> news.getId().equals(id))
                 .findFirst();
