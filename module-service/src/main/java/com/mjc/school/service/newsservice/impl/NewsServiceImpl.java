@@ -2,7 +2,7 @@ package com.mjc.school.service.newsservice.impl;
 
 import com.mjc.school.repository.dao.impl.NewsRepository;
 import com.mjc.school.repository.factory.impl.NewsRepositoryFactory;
-import com.mjc.school.repository.models.News;
+import com.mjc.school.repository.models.NewsModel;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.exceptiion.ValidatorException;
 import com.mjc.school.service.newsservice.Service;
@@ -23,34 +23,34 @@ public class NewsServiceImpl implements Service<NewsDto> {
 
     @Override
     public List<NewsDto> getAll() {
-        List<News> all = newsRepository.readAll();
+        List<NewsModel> all = newsRepository.readAll();
         return ObjectMapperUtils.mapAll(all, NewsDto.class);
     }
 
     @Override
     public NewsDto getById(long id) {
         validator.validateById(id);
-        Optional<News> byId = newsRepository.readById(id);
-        return byId.map(news -> ObjectMapperUtils.map(news, NewsDto.class)).orElse(null);
+        Optional<NewsModel> byId = newsRepository.readById(id);
+        return byId.map(newsModel -> ObjectMapperUtils.map(newsModel, NewsDto.class)).orElse(null);
     }
 
     @Override
     public NewsDto create(NewsDto newsDto) {
         validator.validateCreatedNews(newsDto);
-        News newsToCreate = ObjectMapperUtils.map(newsDto, News.class);
-        newsToCreate.setCreateDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        newsToCreate.setLastUpdatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        return ObjectMapperUtils.map(newsRepository.create(newsToCreate), NewsDto.class);
+        NewsModel newsModelToCreate = ObjectMapperUtils.map(newsDto, NewsModel.class);
+        newsModelToCreate.setCreateDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        newsModelToCreate.setLastUpdatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        return ObjectMapperUtils.map(newsRepository.create(newsModelToCreate), NewsDto.class);
     }
 
     @Override
     public NewsDto update(NewsDto newsDto) {
-        Optional<News> byId = newsRepository.readById(newsDto.getId());
+        Optional<NewsModel> byId = newsRepository.readById(newsDto.getId());
         if (byId.isPresent()) {
             validator.validateCreatedNews(newsDto);
-            News updatedNews = ObjectMapperUtils.map(newsDto, News.class);
-            News news = newsRepository.update(updatedNews);
-            return ObjectMapperUtils.map(news, NewsDto.class);
+            NewsModel updatedNewsModel = ObjectMapperUtils.map(newsDto, NewsModel.class);
+            NewsModel newsModel = newsRepository.update(updatedNewsModel);
+            return ObjectMapperUtils.map(newsModel, NewsDto.class);
         } else {
             throw new ValidatorException(String.format(NEWS_ID_DOES_NOT_EXIST.getMessage(), newsDto.getId()));
         }
@@ -58,7 +58,7 @@ public class NewsServiceImpl implements Service<NewsDto> {
 
     @Override
     public boolean deleteById(long id) {
-        Optional<News> byId = newsRepository.readById(id);
+        Optional<NewsModel> byId = newsRepository.readById(id);
         if (byId.isPresent()) {
             return newsRepository.deleteById(id);
         } else {

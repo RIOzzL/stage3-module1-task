@@ -2,7 +2,7 @@ package com.mjc.school.service.validator;
 
 import com.mjc.school.repository.dao.impl.NewsRepository;
 import com.mjc.school.repository.factory.impl.NewsRepositoryFactory;
-import com.mjc.school.repository.models.News;
+import com.mjc.school.repository.models.NewsModel;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.exceptiion.ValidatorException;
 
@@ -34,7 +34,7 @@ public class NewsValidator {
     }
 
     public void validateById(long id) {
-        Optional<News> news = newsRepository.readById(id);
+        Optional<NewsModel> news = newsRepository.readById(id);
         if (news.isEmpty()) {
             throw new ValidatorException(String.format(NEWS_ID_DOES_NOT_EXIST.getMessage(), id));
         }
@@ -50,7 +50,7 @@ public class NewsValidator {
             errorMessage.append(String.format(VALIDATE_STRING_LENGTH.getMessage(), NEWS_CONTENT,
                     NEWS_CONTENT_MIN_LENGTH, NEWS_CONTENT_MAX_LENGTH, NEWS_CONTENT, newsDto.getContent())).append("\n");
         }
-        if (!newsRepository.readAll().stream().map(News::getAuthorId).toList().contains(newsDto.getAuthorId())) {
+        if (!newsRepository.readAll().stream().map(NewsModel::getAuthorId).toList().contains(newsDto.getAuthorId())) {
             errorMessage.append(String.format(AUTHOR_ID_DOES_NOT_EXIST.getMessage(), newsDto.getAuthorId())).append("\n");
         }
         if (!errorMessage.isEmpty()) {

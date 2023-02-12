@@ -1,7 +1,7 @@
 package com.mjc.school.repository.dao.impl;
 
 import com.mjc.school.repository.dao.Repository;
-import com.mjc.school.repository.models.News;
+import com.mjc.school.repository.models.NewsModel;
 import com.mjc.school.repository.utils.DataSource;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,47 +13,47 @@ import java.util.Optional;
 
 @Setter
 @Getter
-public class NewsRepository implements Repository<News> {
+public class NewsRepository implements Repository<NewsModel> {
 
     private final DataSource dataSource = DataSource.getInstance();
 
     @Override
-    public List<News> readAll() {
-        return dataSource.getNewsList();
+    public List<NewsModel> readAll() {
+        return dataSource.getNewsModelList();
     }
 
     @Override
-    public Optional<News> readById(Long id) {
-        return dataSource.getNewsList().stream()
-                .filter(news -> news.getId().equals(id))
+    public Optional<NewsModel> readById(Long id) {
+        return dataSource.getNewsModelList().stream()
+                .filter(newsModel -> newsModel.getId().equals(id))
                 .findFirst();
     }
 
     @Override
-    public News create(News news) {
-        news.setId(dataSource.increaseNewsId());
-        dataSource.getNewsList().add(news);
-        return news;
+    public NewsModel create(NewsModel newsModel) {
+        newsModel.setId(dataSource.increaseNewsId());
+        dataSource.getNewsModelList().add(newsModel);
+        return newsModel;
     }
 
     @Override
-    public News update(News news) {
-        News newsToUpdate = this.readById(news.getId()).get();
-        newsToUpdate.setTitle(news.getTitle());
-        newsToUpdate.setContent(news.getContent());
-        newsToUpdate.setAuthorId(news.getAuthorId());
-        newsToUpdate.setLastUpdatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        return newsToUpdate;
+    public NewsModel update(NewsModel newsModel) {
+        NewsModel newsModelToUpdate = this.readById(newsModel.getId()).get();
+        newsModelToUpdate.setTitle(newsModel.getTitle());
+        newsModelToUpdate.setContent(newsModel.getContent());
+        newsModelToUpdate.setAuthorId(newsModel.getAuthorId());
+        newsModelToUpdate.setLastUpdatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        return newsModelToUpdate;
     }
 
     @Override
     public Boolean deleteById(Long id) {
-        Optional<News> newsToDelete = dataSource.getNewsList().stream()
-                .filter(news -> news.getId().equals(id))
+        Optional<NewsModel> newsToDelete = dataSource.getNewsModelList().stream()
+                .filter(newsModel -> newsModel.getId().equals(id))
                 .findFirst();
 
         if (newsToDelete.isPresent()) {
-            dataSource.getNewsList().remove(newsToDelete.get());
+            dataSource.getNewsModelList().remove(newsToDelete.get());
             return true;
         } else {
             return false;

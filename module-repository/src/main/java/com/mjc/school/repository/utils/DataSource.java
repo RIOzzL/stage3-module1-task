@@ -1,7 +1,7 @@
 package com.mjc.school.repository.utils;
 
 import com.mjc.school.repository.models.Author;
-import com.mjc.school.repository.models.News;
+import com.mjc.school.repository.models.NewsModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +15,14 @@ import java.util.List;
 public class DataSource {
 
     private static DataSource dataSource;
-    private List<News> newsList;
+    private List<NewsModel> newsModelList;
     private List<Author> authorList;
 
     private Long newsId;
     private Long authorId;
 
     private DataSource() {
-        newsList = new ArrayList<>();
+        newsModelList = new ArrayList<>();
         authorList = new ArrayList<>();
         initAuthors();
         initNews();
@@ -40,11 +40,11 @@ public class DataSource {
         List<String> newsTitles = FileResourcesUtils.getDataFromResourceFiles("news.txt");
         List<String> newsContents = FileResourcesUtils.getDataFromResourceFiles("content.txt");
         for (int id = 1; id <= 20; id++) {
-            newsList.add(new News((long) id, newsTitles.get(id - 1), newsContents.get(id - 1),
+            newsModelList.add(new NewsModel((long) id, newsTitles.get(id - 1), newsContents.get(id - 1),
                     LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
                     LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), authorList.get(id - 1).getId()));
         }
-        newsId = (long) newsList.size();
+        newsId = (long) newsModelList.size();
     }
 
     private void initAuthors() {
